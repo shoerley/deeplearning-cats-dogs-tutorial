@@ -67,14 +67,15 @@ with in_db.begin(write=True) as in_txn:
         if in_idx %  6 == 0:
             continue
         img = cv2.imread(img_path, cv2.IMREAD_COLOR)
-        img = transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT)
-        if 'cat' in img_path:
-            label = 0
-        else:
-            label = 1
-        datum = make_datum(img, label)
-        in_txn.put('{:0>5d}'.format(in_idx), datum.SerializeToString())
-        print '{:0>5d}'.format(in_idx) + ':' + img_path
+        if not img is None:
+            img = transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT)
+            if 'cat' in img_path:
+                label = 0
+            else:
+                label = 1
+            datum = make_datum(img, label)
+            in_txn.put('{:0>5d}'.format(in_idx), datum.SerializeToString())
+            #print '{:0>5d}'.format(in_idx) + ':' + img_path
 in_db.close()
 
 
@@ -86,14 +87,15 @@ with in_db.begin(write=True) as in_txn:
         if in_idx % 6 != 0:
             continue
         img = cv2.imread(img_path, cv2.IMREAD_COLOR)
-        img = transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT)
-        if 'cat' in img_path:
-            label = 0
-        else:
-            label = 1
-        datum = make_datum(img, label)
-        in_txn.put('{:0>5d}'.format(in_idx), datum.SerializeToString())
-        print '{:0>5d}'.format(in_idx) + ':' + img_path
+        if not img is None:
+            img = transform_img(img, img_width=IMAGE_WIDTH, img_height=IMAGE_HEIGHT)
+            if 'cat' in img_path:
+                label = 0
+            else:
+                label = 1
+            datum = make_datum(img, label)
+            in_txn.put('{:0>5d}'.format(in_idx), datum.SerializeToString())
+            #print '{:0>5d}'.format(in_idx) + ':' + img_path
 in_db.close()
 
 print '\nFinished processing all images'
